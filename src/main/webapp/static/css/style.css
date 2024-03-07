@@ -1,0 +1,60 @@
+@import url('https://fonts.googleapis.com/css2?family=Rubik+Maps&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400&display=swap');
+
+body {
+    height: 100vh;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.box {
+    border: 1px solid black;
+    text-align: center;
+    padding: 1.5rem 3rem 0rem 2rem;
+}
+
+.box-headline {
+    margin: 0;
+    margin-bottom: 2rem;
+}
+
+a {
+    text-decoration: none;
+    color: rgb(76, 169, 250);
+}
+
+a:hover {
+    color: rgb(1, 130, 243);
+}
+
+input {
+    background-color: transparent;
+    border: 1px solid black;
+    border-radius: 3px;
+    padding: 0.25rem 0.5rem;
+    margin: 1rem 0;
+}
+
+input[type="submit"] {
+    background-color: transparent;
+    border: 1px solid black;
+    padding: 0.25rem 0.5rem;
+    cursor: pointer;
+}
+
+input[type="submit"]:hover {
+    background-color: rgb(228, 228, 228);
+}
+
+#delete-account-btn {
+    color: rgb(255, 33, 33);
+    font-size: medium;
+}
+
+#delete-account-btn:hover {
+    background-color: rgb(255, 33, 33);
+    color: white;
+}

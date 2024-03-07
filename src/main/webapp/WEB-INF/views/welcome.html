@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="de">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Willkommen</title>
+        <link rel="stylesheet" href="/css/style.css">
+    </head>
+    <body>
+        <div>
+            <h1 id="box-headline">Willkommen ${name}</h1>
+            <h4>E-Mail Adresse: ${email}</h4>
+            <h4>Klasse: ${class}</h4>
+            <h4>Telefonnummer: ${phonenumber}</h4>
+            <h4>Geburtsdatum: ${dateofbirth}</h4>
+            <form action="/delete-account" method="DELETE">
+                <input id="delete-account-btn" type="submit" value="Konto und alle Daten löschen">
+            </form>
+        </div>
+    </body>
+</html>
