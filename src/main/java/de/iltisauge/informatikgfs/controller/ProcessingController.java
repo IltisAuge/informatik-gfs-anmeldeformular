@@ -12,6 +12,7 @@ import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.text.ParseException;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -45,7 +46,7 @@ public class ProcessingController {
                        @RequestParam(name = "class") String clazz,
                        @RequestParam(name = "phone-number") String phoneNumber,
                        @RequestParam(name = "date-of-birth") String dateOfBirth)
-            throws NoSuchAlgorithmException {
+            throws NoSuchAlgorithmException, ParseException {
         final Account account = AccountDatabase.getInstance().getAccount(email);
         if (account != null) {
             redirAttr.addFlashAttribute("alert",
@@ -54,8 +55,8 @@ public class ProcessingController {
         }
         // Hash password in SHA256
         final String passwordSHA256 = sha256(password);
-        final SimpleDateFormat dateFormat = new SimpleDateFormat("YYYY-MM-DD");
-        final Date javaDate = dateFormat.parse(dateOfBirth, new ParsePosition(0));
+        final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        final Date javaDate = dateFormat.parse(dateOfBirth);
         if (AccountDatabase.getInstance().
                 createAccount(email, passwordSHA256,
                             name, clazz, phoneNumber, javaDate)) {
