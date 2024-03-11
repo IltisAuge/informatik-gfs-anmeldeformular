@@ -1,6 +1,10 @@
 package de.iltisauge.informatikgfs.controller;
 
 import java.util.Date;
+
+/**
+ * @author Daniel Ziegler
+ */
 public record Account(String email,
                       String passwordSHA256,
                       String name,

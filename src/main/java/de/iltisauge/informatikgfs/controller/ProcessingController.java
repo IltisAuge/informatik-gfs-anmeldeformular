@@ -13,10 +13,12 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.ParseException;
-import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+/**
+ * @author Daniel Ziegler
+ */
 @Controller
 public class ProcessingController {
 

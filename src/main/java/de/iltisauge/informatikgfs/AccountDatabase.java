@@ -10,6 +10,9 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * @author Daniel Ziegler
+ */
 public class AccountDatabase extends MySQLDatabase {
 
     private final Map<String, Account> accountCache = new HashMap<>();
