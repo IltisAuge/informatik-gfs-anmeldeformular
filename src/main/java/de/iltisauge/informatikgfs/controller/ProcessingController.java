@@ -8,10 +8,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
-
-import java.math.BigInteger;
-import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -27,8 +23,7 @@ public class ProcessingController {
     public RedirectView handleLogin(HttpServletRequest request,
                                 RedirectAttributes redirAttr,
                                 @RequestParam(name = "email") String email,
-                                @RequestParam(name = "password") String password)
-            throws NoSuchAlgorithmException {
+                                @RequestParam(name = "password") String password) {
         // Password hashen
         final String passwordSHA256 = sha256(password);
         final Account account = AccountDatabase.getInstance().getAccount(email);
@@ -53,7 +48,7 @@ public class ProcessingController {
                        @RequestParam(name = "class") String clazz,
                        @RequestParam(name = "phone-number") String phoneNumber,
                        @RequestParam(name = "date-of-birth") String dateOfBirth)
-            throws NoSuchAlgorithmException, ParseException {
+                    throws ParseException {
         // Konto aus Datenbank oder Cache laden
         final Account account = AccountDatabase.getInstance().getAccount(email);
         if (account != null) {
@@ -109,15 +104,6 @@ public class ProcessingController {
 
     private String sha256(String input) {
         // Übergabewert "input" in SHA-256-Hash umwandeln
-        final String hash = new DigestUtils("SHA3-256").digestAsHex(input);
-        /*final MessageDigest digest = MessageDigest.getInstance("SHA-256");
-        final byte[] hashBytes = digest.digest(input.getBytes(StandardCharsets.UTF_8));
-        // Decoding
-        final BigInteger bigInt = new BigInteger(1, hashBytes);
-        String hash = bigInt.toString(16);
-        while (hash.length() < 32) {
-            hash = "0" + hash;
-        }*/
-        return hash;
+        return new DigestUtils("SHA3-256").digestAsHex(input);
     }
 }

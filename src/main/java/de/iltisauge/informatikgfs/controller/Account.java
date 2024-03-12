@@ -13,7 +13,7 @@ public record Account(String email,
                       Date dateOfBirth) {
 
     /*
-    get-Methoden für die einzelnen Attribute
+    get-Methoden für die einzelnen Attribute.
     Diese Methoden müssen erstellt werden, damit über JSP zugegriffen werden kann
      */
 

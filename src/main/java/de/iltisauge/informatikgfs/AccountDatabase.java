@@ -42,9 +42,9 @@ public class AccountDatabase extends MySQLDatabase {
 
     /**
      *
-     * @param email
-     * @return If an account is found,
-     * a new {@link Account} object, otherwise null
+     * @param email E-Mail-Adresse
+     * @return Wenn ein Konto gefunden wurde, das {@link Account}-Objekt
+     * ansonsten <code>null</code>
      */
     public Account getAccount(String email) {
         Account account = null;
