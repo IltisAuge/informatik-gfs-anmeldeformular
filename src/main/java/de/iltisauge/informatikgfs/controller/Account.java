@@ -12,6 +12,11 @@ public record Account(String email,
                       String phoneNumber,
                       Date dateOfBirth) {
 
+    /*
+    get-Methoden für die einzelnen Attribute
+    Diese Methoden müssen erstellt werden, damit über JSP zugegriffen werden kann
+     */
+
     public String getEmail() {
         return email;
     }

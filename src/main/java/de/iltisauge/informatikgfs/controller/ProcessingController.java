@@ -2,6 +2,7 @@ package de.iltisauge.informatikgfs.controller;
 
 import de.iltisauge.informatikgfs.AccountDatabase;
 import jakarta.servlet.http.HttpServletRequest;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -28,14 +29,18 @@ public class ProcessingController {
                                 @RequestParam(name = "email") String email,
                                 @RequestParam(name = "password") String password)
             throws NoSuchAlgorithmException {
-        // Hash password in SHA256
+        // Password hashen
         final String passwordSHA256 = sha256(password);
         final Account account = AccountDatabase.getInstance().getAccount(email);
+        // Überprüfen, ob Konto existiert und ob die Passwörter übereinstimmen
         if (account != null && account.getPasswordSHA256().equals(passwordSHA256)) {
+            // User-Attribut im Session-Objekt setzen
             request.getSession().setAttribute("user", account);
+            // Account-Objekt an nächsten View übergeben
             redirAttr.addFlashAttribute("account", account);
             return new RedirectView("/welcome");
         }
+        // Text an Login-View übergeben
         redirAttr.addFlashAttribute("alert", "<p>Ungültige Anmeldedaten!</p>");
         return new RedirectView("/login");
     }
@@ -49,23 +54,33 @@ public class ProcessingController {
                        @RequestParam(name = "phone-number") String phoneNumber,
                        @RequestParam(name = "date-of-birth") String dateOfBirth)
             throws NoSuchAlgorithmException, ParseException {
+        // Konto aus Datenbank oder Cache laden
         final Account account = AccountDatabase.getInstance().getAccount(email);
         if (account != null) {
+            /* Konto mit dieser E-Mail existiert bereits
+                -> Text an Registierungs-View übergeben
+             */
             redirAttr.addFlashAttribute("alert",
-                    "<p>Ein Konto mit dieser E-Mail Adresse existiert bereits!</p>");
+                    "<p>Ein Konto mit dieser E-Mail-Adresse existiert bereits!</p>");
             return new RedirectView("/register");
         }
-        // Hash password in SHA256
+        // Password hashen
         final String passwordSHA256 = sha256(password);
+        // In der Anfrage enthaltenes Datum hat das Format: 2024-03-13
         final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        // Datum-String in Java-Datum umwandeln
         final Date javaDate = dateFormat.parse(dateOfBirth);
         if (AccountDatabase.getInstance().
                 createAccount(email, passwordSHA256,
                             name, clazz, phoneNumber, javaDate)) {
+            // createAccount hat "true" zurückgegeben -> Kein Fehler
+            // Text an Login-View übergeben
             redirAttr.addFlashAttribute("alert",
                     "<p>Konto wurde erstellt. Bitte anmelden!</p>");
             return new RedirectView("/login");
         }
+        // createAccount hat "false" zurückgegeben -> Fehler!
+        // Text an Registrierungs-View übergeben
         redirAttr.addFlashAttribute("alert",
                 "<p>Fehler! Konto wurde nicht erstellt.</p>");
         return new RedirectView("/register");
@@ -73,27 +88,36 @@ public class ProcessingController {
 
     @PostMapping("/delete-account")
     public RedirectView deleteAccount(HttpServletRequest request, RedirectAttributes redirAttr) {
+        // Überprüfen, ob Client angemeldet ist
         if (!GetViewController.isLoggedIn(request)) {
+            // Wenn nicht, auf die Login-Seite weiterleiten
             return new RedirectView("/login");
         }
+        // Account-Objekt aus dem Session-Objekt laden
         final Account account = (Account) request.getSession().getAttribute("user");
         if (AccountDatabase.getInstance().deleteAccount(account.getEmail())) {
+            // deleteAccount hat "true" zurückgegeben -> Kein Fehler
+            // Text an Login-View übergeben
             redirAttr.addFlashAttribute("alert", "<p>Konto wurde gelöscht.</p>");
             return new RedirectView("/login");
         }
+        // deleteAccount hat "false" zurückgegeben -> Fehler!
+        // Text an Willkommen-View übergeben
         redirAttr.addFlashAttribute("alert", "<p>Fehler! Konto wurde nicht gelöscht.</p>");
         return new RedirectView("/welcome");
     }
 
-    private String sha256(String input) throws NoSuchAlgorithmException {
-        final MessageDigest digest = MessageDigest.getInstance("SHA-256");
+    private String sha256(String input) {
+        // Übergabewert "input" in SHA-256-Hash umwandeln
+        final String hash = new DigestUtils("SHA3-256").digestAsHex(input);
+        /*final MessageDigest digest = MessageDigest.getInstance("SHA-256");
         final byte[] hashBytes = digest.digest(input.getBytes(StandardCharsets.UTF_8));
         // Decoding
         final BigInteger bigInt = new BigInteger(1, hashBytes);
         String hash = bigInt.toString(16);
         while (hash.length() < 32) {
             hash = "0" + hash;
-        }
+        }*/
         return hash;
     }
 }
