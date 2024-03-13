@@ -9,7 +9,7 @@
     <body>
         <div>
             <h1>Willkommen ${user.name}</h1>
-            <h4>E-Mail Adresse: ${user.email}</h4>
+            <h4>E-Mail-Adresse: ${user.email}</h4>
             <h4>Klasse: ${user.clazz}</h4>
             <h4>Telefonnummer: ${user.phoneNumber}</h4>
             <h4>

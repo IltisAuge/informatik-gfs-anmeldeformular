@@ -24,7 +24,7 @@ public class ProcessingController {
                                 RedirectAttributes redirAttr,
                                 @RequestParam(name = "email") String email,
                                 @RequestParam(name = "password") String password) {
-        // Password hashen
+        // Passwort hashen
         final String passwordSHA256 = sha256(password);
         final Account account = AccountDatabase.getInstance().getAccount(email);
         // Überprüfen, ob Konto existiert und ob die Passwörter übereinstimmen
@@ -53,13 +53,13 @@ public class ProcessingController {
         final Account account = AccountDatabase.getInstance().getAccount(email);
         if (account != null) {
             /* Konto mit dieser E-Mail existiert bereits
-                -> Text an Registierungs-View übergeben
+                -> Text an Registrierungs-View übergeben
              */
             redirAttr.addFlashAttribute("alert",
                     "<p>Ein Konto mit dieser E-Mail-Adresse existiert bereits!</p>");
             return new RedirectView("/register");
         }
-        // Password hashen
+        // Passwort hashen
         final String passwordSHA256 = sha256(password);
         // In der Anfrage enthaltenes Datum hat das Format: 2024-03-13
         final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -103,7 +103,7 @@ public class ProcessingController {
     }
 
     private String sha256(String input) {
-        // Übergabewert "input" in SHA-256-Hash umwandeln
+        // Übergabewert "input" in SHA-256-Hash umwandelt
         return new DigestUtils("SHA3-256").digestAsHex(input);
     }
 }
